@@ -8,6 +8,18 @@ const Users = () => {
         const email = form.get("email");
         const user = { name, email }
         console.log(user);
+
+        fetch("http://localhost:5000/user", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(user)
+        })
+            .then(res => res.json())
+            .then(data => {
+                console.log(data);
+            })
     }
     return (
         <div>
