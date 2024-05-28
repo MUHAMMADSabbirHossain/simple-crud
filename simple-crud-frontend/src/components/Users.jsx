@@ -5,6 +5,7 @@ const Users = () => {
 
     const loadedUsers = useLoaderData();
     const [users, setUsers] = useState(loadedUsers);
+    console.log(users);
 
     function handleUserCreate(event) {
         event.preventDefault();
@@ -25,6 +26,17 @@ const Users = () => {
             .then(res => res.json())
             .then(data => {
                 console.log(data);
+
+                if (data.acknowledged === true) {
+                    alert("User is successfully created");
+                }
+
+                user._id = data.insertedId;
+                // display new users
+                const newUsers = [...users, user];
+                setUsers(newUsers);
+                // clear form
+                event.target.reset();
             })
     }
 
