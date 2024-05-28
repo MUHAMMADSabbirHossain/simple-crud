@@ -62,10 +62,23 @@ const Users = () => {
             })
     }
 
+    // update user
+    function handleUserUpdate(id) {
+        console.log(id);
+
+        fetch("http://localhost:5000/user/6654ce904b2f10fc459d48da")
+            .then(res => res.json())
+            .then(data => {
+                console.log(data);
+            })
+
+    }
+
     return (
         <div>
             <h1>{`Users: ${users.length}`}</h1>
 
+            {/* create user form */}
             <section>
                 <form onSubmit={handleCreateUser}>
                     <input type="text" name="name" id="" placeholder="Name" />
@@ -74,12 +87,22 @@ const Users = () => {
                 </form>
             </section>
 
+            {/* <section>
+                <form onSubmit={handleUserUpdate}>
+                    <input type="text" name="name" id="" placeholder="Name" />
+                    <input type="email" name="email" id="" placeholder="Email" />
+                    <input type="submit" value="Update User" />
+                </form>
+            </section> */}
+
             <section>
                 {
                     users.map(user => <div
                         key={user._id}>
                         <p>
-                            {`${user.name} | ${user.email} [${user._id}]`} <button onClick={() => handleDeleteUser(user._id)}>X</button>
+                            {`${user.name} | ${user.email} [${user._id}]`}
+                            <button onClick={() => handleUserUpdate(user._id)}>update</button>
+                            <button onClick={() => handleDeleteUser(user._id)}>X</button>
                         </p>
                     </div>)
                 }
