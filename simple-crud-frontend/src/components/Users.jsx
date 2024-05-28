@@ -7,7 +7,7 @@ const Users = () => {
     const [users, setUsers] = useState(loadedUsers);
     console.log(users);
 
-    function handleUserCreate(event) {
+    function handleCreateUser(event) {
         event.preventDefault();
 
         const form = new FormData(event.currentTarget);
@@ -45,7 +45,7 @@ const Users = () => {
             <h1>{`Users: ${users.length}`}</h1>
 
             <section>
-                <form onSubmit={handleUserCreate}>
+                <form onSubmit={handleCreateUser}>
                     <input type="text" name="name" id="" placeholder="Name" />
                     <input type="email" name="email" id="" placeholder="Email" />
                     <input type="submit" value="Create User" />
@@ -55,7 +55,8 @@ const Users = () => {
             <section>
                 {
                     users.map(user => <div
-                        key={user._id}> <p>{`${user.name} | ${user.email}`}</p>
+                        key={user._id}>
+                        <p>{`${user.name} | ${user.email}`} <button>X</button></p>
                     </div>)
                 }
             </section>
