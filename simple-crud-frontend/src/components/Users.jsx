@@ -1,4 +1,10 @@
+import { useState } from "react";
+import { useLoaderData } from "react-router-dom";
+
 const Users = () => {
+
+    const loadedUsers = useLoaderData();
+    const [users, setUsers] = useState(loadedUsers);
 
     function handleUserCreate(event) {
         event.preventDefault();
@@ -21,15 +27,26 @@ const Users = () => {
                 console.log(data);
             })
     }
+
     return (
         <div>
-            <h1>Users</h1>
+            <h1>{`Users: ${users.length}`}</h1>
 
-            <form onSubmit={handleUserCreate}>
-                <input type="text" name="name" id="" placeholder="Name" />
-                <input type="email" name="email" id="" placeholder="Email" />
-                <input type="submit" value="Create User" />
-            </form>
+            <section>
+                <form onSubmit={handleUserCreate}>
+                    <input type="text" name="name" id="" placeholder="Name" />
+                    <input type="email" name="email" id="" placeholder="Email" />
+                    <input type="submit" value="Create User" />
+                </form>
+            </section>
+
+            <section>
+                {
+                    users.map(user => <div
+                        key={user._id}> <p>{`${user.name} | ${user.email}`}</p>
+                    </div>)
+                }
+            </section>
         </div>
     );
 };

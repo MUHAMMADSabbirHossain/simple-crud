@@ -6,11 +6,15 @@ const roots = createBrowserRouter([
     {
         path: "/",
         element: <Root></Root>,
+        children: [
+            {
+                path: "/users",
+                element: <Users></Users>,
+                loader: () => fetch("http://localhost:5000/users")
+            }
+        ]
     },
-    {
-        path: "/users",
-        element: <Users></Users>
-    }
+
 ]);
 
 export default roots;

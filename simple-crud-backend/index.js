@@ -28,6 +28,18 @@ async function run() {
         const database = client.db("simple-crud");
         const usersCollection = database.collection("users");
 
+        app.get("/users", async (req, res) => {
+            const cursor = usersCollection.find();
+
+            if ((await usersCollection.countDocuments()) === 0) {
+                console.log("No documents found!");
+            }
+
+            const result = await cursor.toArray();
+            console.log(result);
+            res.send(result);
+        })
+
         app.post("/user", async (req, res) => {
             console.log("user server route");
             const user = req.body;
@@ -36,7 +48,6 @@ async function run() {
             // Insert the defined document into the "haiku" collection
             const result = await usersCollection.insertOne(user);
             res.send(result);
-
         })
 
         // Send a ping to confirm a successful connection
