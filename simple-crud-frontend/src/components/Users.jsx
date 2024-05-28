@@ -37,8 +37,6 @@ const Users = () => {
                     // clear form
                     event.target.reset();
                 }
-
-
             })
     }
 
@@ -46,7 +44,22 @@ const Users = () => {
         console.log(id);
 
         // delete user
-        fetch("")
+        fetch(`http://localhost:5000/user/${id}`, {
+            method: "DELETE"
+        })
+            .then(res => res.json())
+            .then(data => {
+                console.log(data);
+
+                if (data.deletedCount === 1) {
+                    alert("Successfully deleted");
+
+                    const remainingUsers = users.filter(user => user._id !== id);
+                    setUsers(remainingUsers);
+                } else {
+                    alert("No documents matched the query. Deleted 0 documents.");
+                }
+            })
     }
 
     return (
@@ -66,7 +79,7 @@ const Users = () => {
                     users.map(user => <div
                         key={user._id}>
                         <p>
-                            {`${user.name} | ${user.email}`} <button onClick={() => handleDeleteUser(user._id)}>X</button>
+                            {`${user.name} | ${user.email} [${user._id}]`} <button onClick={() => handleDeleteUser(user._id)}>X</button>
                         </p>
                     </div>)
                 }

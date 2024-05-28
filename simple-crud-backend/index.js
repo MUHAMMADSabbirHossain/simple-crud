@@ -7,7 +7,7 @@ const port = process.env.PORT | 5000;
 app.use(cors());
 app.use(express.json());
 
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const uri = "mongodb+srv://dustobalok000:72aSFMLMwRx2o33W@simple-crud.ovfd1dh.mongodb.net/?retryWrites=true&w=majority&appName=simple-crud";
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
@@ -47,6 +47,15 @@ async function run() {
 
             // Insert the defined document into the "haiku" collection
             const result = await usersCollection.insertOne(user);
+            res.send(result);
+        })
+
+        app.delete("/user/:id", async (req, res) => {
+            const id = req.params.id;
+            console.log("delete id: ", id);
+
+            const quary = { _id: new ObjectId(id) };
+            const result = await usersCollection.deleteOne(quary);
             res.send(result);
         })
 
