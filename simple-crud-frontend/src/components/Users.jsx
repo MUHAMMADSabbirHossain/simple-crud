@@ -29,15 +29,24 @@ const Users = () => {
 
                 if (data.acknowledged === true) {
                     alert("User is successfully created");
+
+                    user._id = data.insertedId;
+                    // display new users
+                    const newUsers = [...users, user];
+                    setUsers(newUsers);
+                    // clear form
+                    event.target.reset();
                 }
 
-                user._id = data.insertedId;
-                // display new users
-                const newUsers = [...users, user];
-                setUsers(newUsers);
-                // clear form
-                event.target.reset();
+
             })
+    }
+
+    function handleDeleteUser(id) {
+        console.log(id);
+
+        // delete user
+        fetch("")
     }
 
     return (
@@ -56,7 +65,9 @@ const Users = () => {
                 {
                     users.map(user => <div
                         key={user._id}>
-                        <p>{`${user.name} | ${user.email}`} <button>X</button></p>
+                        <p>
+                            {`${user.name} | ${user.email}`} <button onClick={() => handleDeleteUser(user._id)}>X</button>
+                        </p>
                     </div>)
                 }
             </section>
