@@ -5,14 +5,20 @@ const Users = () => {
 
     const loadedUsers = useLoaderData();
     const [users, setUsers] = useState(loadedUsers);
+    const [updatedUser, setUpdatedUser] = useState({});
+
     console.log(users);
 
     function handleCreateUser(event) {
         event.preventDefault();
 
-        const form = new FormData(event.currentTarget);
-        const name = form.get("name");
-        const email = form.get("email");
+        // const form = new FormData(event.currentTarget);
+        // const name = form.get("name");
+        // const email = form.get("email");
+
+
+        const name = event.target.name.value;
+        const email = event.target.email.value;
         const user = { name, email }
         console.log(user);
 
@@ -32,7 +38,7 @@ const Users = () => {
 
                     user._id = data.insertedId;
                     // display new users
-                    const newUsers = [...users, user];
+                    const newUsers = [user, ...users];
                     setUsers(newUsers);
                     // clear form
                     event.target.reset();
@@ -63,15 +69,57 @@ const Users = () => {
     }
 
     // update user
-    function handleUserUpdate(id) {
-        console.log(id);
+    function handleUserUpdateform(event) {
+        event.preventDefault();
 
-        fetch("http://localhost:5000/user/6654ce904b2f10fc459d48da")
+        // const form = new FormData(event.currentTarget);
+        // const name = form.get("name");
+        // const email = form.get("email");
+
+        const name = event.target.name.value;
+        const email = event.target.email.value;
+        const user = { name, email }
+        console.log(user);
+
+        fetch(`http://localhost:5000/user/${updatedUser._id}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(user)
+        })
             .then(res => res.json())
             .then(data => {
                 console.log(data);
+
+                if (data.acknowledged === true) {
+                    alert(`${user.name} is update successfully`);
+
+                    const preUpdatedUsers = users.filter(user => user._id !== updatedUser._id)
+                    user._id = updatedUser._id;
+                    const newUpdatedUsers = [user, ...preUpdatedUsers]
+                    setUsers(newUpdatedUsers);
+
+                    // clear form
+                    // const temp = { name: "", email: "" }
+                    setUpdatedUser({});
+                } else {
+                    alert(`${user.name} doesn't update successfully`);
+                }
             })
 
+    }
+
+    function handleUserUpdate(id) {
+        console.log(id);
+
+        fetch(`http://localhost:5000/user/${id}`)
+            .then(res => res.json())
+            .then(data => {
+                console.log(data);
+                setUpdatedUser(data);
+                console.log("updatedUser: ", updatedUser);
+            })
     }
 
     return (
@@ -87,14 +135,16 @@ const Users = () => {
                 </form>
             </section>
 
-            {/* <section>
-                <form onSubmit={handleUserUpdate}>
-                    <input type="text" name="name" id="" placeholder="Name" />
-                    <input type="email" name="email" id="" placeholder="Email" />
+            {/* update user form */}
+            <section>
+                <form onSubmit={handleUserUpdateform}>
+                    <input type="text" name="name" id="" defaultValue={updatedUser?.name} />
+                    <input type="email" name="email" id="" defaultValue={updatedUser?.email} />
                     <input type="submit" value="Update User" />
                 </form>
-            </section> */}
+            </section>
 
+            {/* display usera */}
             <section>
                 {
                     users.map(user => <div

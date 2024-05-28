@@ -61,6 +61,26 @@ async function run() {
             res.send(result);
         })
 
+        app.put("/user/:id", async (req, res) => {
+            const id = req.params.id;
+            const user = req.body;
+            console.log(id, user);
+
+            const filter = { _id: new ObjectId(id) };
+
+            const updateUser = {
+                $set: {
+                    "name": user.name,
+                    "email": user.email
+                },
+            };
+
+            const result = await usersCollection.updateOne(filter, updateUser);
+            console.log(updateUser);
+            res.send(result);
+
+        })
+
         app.delete("/user/:id", async (req, res) => {
             const id = req.params.id;
             console.log("delete id: ", id);
