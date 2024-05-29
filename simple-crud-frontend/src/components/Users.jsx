@@ -69,7 +69,7 @@ const Users = () => {
     }
 
     // update user
-    function handleUserUpdateform(event) {
+    function handleUserUpdateForm(event) {
         event.preventDefault();
 
         // const form = new FormData(event.currentTarget);
@@ -103,6 +103,7 @@ const Users = () => {
                     // clear form
                     // const temp = { name: "", email: "" }
                     setUpdatedUser({});
+                    event.target.defaultValue.reset();
                 } else {
                     alert(`${user.name} doesn't update successfully`);
                 }
@@ -137,7 +138,7 @@ const Users = () => {
 
             {/* update user form */}
             <section>
-                <form onSubmit={handleUserUpdateform}>
+                <form onSubmit={handleUserUpdateForm}>
                     <input type="text" name="name" id="" defaultValue={updatedUser?.name} />
                     <input type="email" name="email" id="" defaultValue={updatedUser?.email} />
                     <input type="submit" value="Update User" />
