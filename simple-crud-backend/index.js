@@ -48,7 +48,6 @@ async function run() {
             const result = await usersCollection.findOne(query);
             console.log(result);
             res.send(result);
-
         })
 
         app.post("/user", async (req, res) => {
@@ -67,7 +66,7 @@ async function run() {
             console.log(id, user);
 
             const filter = { _id: new ObjectId(id) };
-
+            const options = { upsert: true };
             const updateUser = {
                 $set: {
                     "name": user.name,
@@ -75,10 +74,9 @@ async function run() {
                 },
             };
 
-            const result = await usersCollection.updateOne(filter, updateUser);
+            const result = await usersCollection.updateOne(filter, updateUser, options);
             console.log(updateUser);
             res.send(result);
-
         })
 
         app.delete("/user/:id", async (req, res) => {
